@@ -1,0 +1,36 @@
+syms theta1 theta2 theta3 theta4 theta5 theta6 real
+% syms a1 a2 a3 a4 a5 a6 real
+% syms d1 d2 d3 d4 d5 d6 real
+a1=0;
+a2=0;
+a3=0.663;
+a4
+R1 = [cos(theta1) -sin(theta1) 0; sin(theta1) cos(theta1) 0; 0 0 1];
+R2 = [cos(theta2) 0 sin(theta2); 0 1 0; -sin(theta2) 0 cos(theta2)];
+R3 = [cos(theta3) 0 sin(theta3); 0 1 0; -sin(theta3) 0 cos(theta3)];
+R4 = [cos(theta4) 0 sin(theta4); 0 1 0; -sin(theta4) 0 cos(theta4)];
+R5 = [cos(theta5) -sin(theta5) 0; sin(theta5) cos(theta5) 0; 0 0 1];
+R6 = [cos(theta6) 0 sin(theta6); 0 1 0; -sin(theta6) 0 cos(theta6)];
+d1 = [a1*cos(theta1); a1*sin(theta1); d1];
+d2 = [a2*cos(theta2); a2*sin(theta2); d2];
+d3 = [a3*cos(theta3); a3*sin(theta3); d3];
+d4 = [a4*cos(theta4); a4*sin(theta4); d4];
+d5 = [a5*cos(theta5); a5*sin(theta5); d5];
+d6 = [a6*cos(theta6); a6*sin(theta6); d6];
+p = d1 + R1*d2 + R1*R2*d3 + R1*R2*R3*d4 + R1*R2*R3*R4*d5 + R1*R2*R3*R4*R5*d6;
+syms x y z real
+p_target = [x; y; z];
+eqns = p == p_target;
+sol = solve(eqns, [theta1, theta2, theta3, theta4, theta5, theta6]);
+thetas = [theta1, theta2, theta3, theta4, theta5, theta6];
+real_solutions = [];
+for i = 1:length(sol)
+    if all(isreal(sol(i).thetas)) && all(-pi <= sol(i).thetas & sol(i).thetas <= pi)
+        real_solutions = [real_solutions; sol(i).thetas];
+    end
+end
+if isempty(real_solutions) || any(real_solutions == 0)
+    disp('No valid solutions found.')
+else
+    disp(real_solutions);
+end
